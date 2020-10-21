@@ -4,10 +4,12 @@ class User < ActiveRecord::Base
 
     def get_beers
         # gets user's beer list by name and has_tried
+        UserBeer.where "user_id = ?" self.id
     end
 
     def get_untasted
         # gets user's list of untried beers
+
     end
 
     def get_tasted
