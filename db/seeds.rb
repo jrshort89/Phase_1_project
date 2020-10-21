@@ -10,13 +10,17 @@
 #     Beer.create(name: Faker::Beer.name, description: Faker::Beer.brand, cat_name: Faker::Beer.style, country: Faker::Address.country, abv: Faker::Beer.alcohol)
 # end
 
-# 10.times do
+# 15.times do
 #     UserBeer.create(
 #         user: User.all.sample, 
-#         beer: Beer.all.sample)
+#         beer: Beer.all.sample,
+#         has_tried: true)
 #     end
 
-# UserBeer.all.each do |ub|
-#     ub.has_tried = false
-#     ub.save
+# 5.times do
+#     UserBeer.create(
+#         user: User.all.sample,
+#         beer: Beer.find(1),
+#         has_tried: true
+#     )
 # end
