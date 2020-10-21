@@ -1,6 +1,7 @@
 class Beer < ActiveRecord::Base
     has_many :user_beers
     has_many :users, through: :user_beers
+    
     def self.get_most_drank
         # gets the beer drank by most users
         # only has_tried = true counts

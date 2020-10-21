@@ -1,23 +1,25 @@
 class Menu
     @@prompt = TTY::Prompt.new
-    @@box = TTY::Box.frame(width: 30, height: 10) do
-        "Drawin a box in terminal emulator"
-      end
-    def self.start_menu
-        self.title
-        self.prompt.keypress("\nPress Any Key To Start")
-        system "clear"
-    end
-
+    # @@box = TTY::Box.frame(width: 30, height: 10) do
+    #     "Drawin a box in terminal emulator"
+    #   end
+    
     def self.prompt
         @@prompt
     end
-
+    
     def self.box
         @@box
     end
 
+    def self.start_menu
+        self.title
+        self.prompt.keypress("\nPress Any Key To Start")
+        self.user_menu
+    end
+
     def self.title
+        system "clear"
         puts "
         ██████╗ ██╗███╗   ██╗████████╗    ██████╗  █████╗ ██╗     
         ██╔══██╗██║████╗  ██║╚══██╔══╝    ██╔══██╗██╔══██╗██║     
@@ -29,7 +31,17 @@ class Menu
         "
     end
 
+    def self.pint_pic
+        puts "         . .
+        .. . *.
+ - -_ _-__-0oOo
+  _-_ -__ -||||)
+     ______||||______
+ ~~~~~~~~~~`""'"
+    end
+
     def self.user_menu
+        system "clear"
         user_response = prompt.select("Welcome to Pint Pal!\n\n") do |menu|
             menu.choice "Create User"
             menu.choice "Login"
@@ -43,7 +55,8 @@ class Menu
         if user_response == "Create User"
             self.create_user_helper
         elsif user_response == "Login"
-            puts ''
+            username = prompt.ask("Please enter your username to continue drinking beer:")
+            self.login_helper(username)
         else
             return
         end
@@ -51,16 +64,17 @@ class Menu
 
     def self.create_user_helper
         name = prompt.ask("Please enter your first and last name:")
-        gender = prompt.ask("Please enter your gender:")
-        age = prompt.ask("Please enter your age:")
-        location = prompt.ask("Please enter your zip zode:")
-        User.find_or_create_by name: name, gender: gender, age: age, location: location
+        username = prompt.ask("Please create a unique username that embodies your deepest beer thoughts:")
+        User.find_or_create_by name: name, username: username
         puts "Welcome #{name}!"
         sleep(3)
     end
 
-    def self.user_login_menu
-        
+    def self.login_helper(username)
+        user = User.find_by username: username
+        self.pint_pic
+        prompt.keypress("Hello, #{user.name}! Welcome back to your beer journey!")
+        UserMenu.main_user_menu(user)
     end
 end
 
