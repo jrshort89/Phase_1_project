@@ -67,6 +67,7 @@ class Menu
         username = prompt.ask("Please create a unique username that embodies your deepest beer thoughts:")
         User.find_or_create_by name: name, username: username
         puts "Welcome #{name}!"
+        # log user in if they are a user already or not
         sleep(3)
     end
 
