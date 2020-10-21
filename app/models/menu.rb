@@ -64,15 +64,16 @@ class Menu
 
     def self.create_user_helper
         name = prompt.ask("Please enter your first and last name:")
-        username = prompt.ask("Please create a unique username that embodies your deepest beer thoughts:")
-        User.find_or_create_by name: name, username: username
-        puts "Welcome #{name}!"
+        username = prompt.ask("\nPlease create a unique username that embodies your deepest beer thoughts:")
+        user = User.find_or_create_by name: name, username: username
+        puts "\nWelcome #{name}!"
         # log user in if they are a user already or not
-        sleep(3)
+        sleep(1)
+        UserMenu.main_user_menu(user)
     end
 
     def self.login_helper(username)
-        user = User.find_by username: username
+        user = User.find_or_create_by username: username
         self.pint_pic
         prompt.keypress("Hello, #{user.name}! Welcome back to your beer journey!")
         UserMenu.main_user_menu(user)
