@@ -1,12 +1,6 @@
 require "bundler/setup"
 Bundler.require
-require "sinatra/activerecord"
-require "ostruct"
-require "date"
-require "tty-prompt"
-require "rest-client"
-require "tty-box"
-require "tty-screen"
+
 
 require_all 'app/models'
 

@@ -5,12 +5,27 @@ class User < ActiveRecord::Base
     def get_beers
         # gets user's beer entire list that has_tried
         ub = UserBeer.where "user_id = ?", self.id
+        bids = ub.map do |ub|
+            ub.beer_id
+        end
+        yb = Beer.where(:id => bids)
+        yb.each do |x|
+            puts "Name: #{x.name}, Description: #{x.description}, Abv: #{x.abv}%"
+            puts "Category: #{x.cat_name}, Country: #{x.country}\n\n"
+        end
     end
 
     def get_untasted
         # gets user's list of untried beers has_tried = false
         ub = UserBeer.where(:user_id => self.id, :has_tried => false)
-        #
+        bids = ub.map do |ub|
+            ub.beer_id
+        end
+        yb = Beer.where(:id => bids)
+        yb.each do |x|
+            puts "Name: #{x.name}, Description: #{x.description}, Abv: #{x.abv}%"
+            puts "Category: #{x.cat_name}, Country: #{x.country}\n\n"
+        end
     end
     
     def get_tasted
@@ -24,16 +39,23 @@ class User < ActiveRecord::Base
             ub.beer_id
         end
         #bids it's an array of all the beer_ids number 
-        Beer.where(:id => bids) #we call all the numbers
+        yb = Beer.where(:id => bids) #we call all the numbers
+        yb.each do |x|
+            puts "Name: #{x.name}, Description: #{x.description}, Abv: #{x.abv}%"
+            puts "Category: #{x.cat_name}, Country: #{x.country}\n\n"
+        end
     end
 
     def get_most_drank
         # get user's most drank beer
         # compare quantity of 'has_tried = true' per UserBeer for this user
-        ub = self.get_beers.where(:has_tried => true).limit(1).count(:beer_id)
+        ub = UserBeer.where(:user_id => self.id, :has_tried => true).limit(1).count(:beer_id)
         # ub is the beer_id of the most drank beer
-        Beer.where(:id => ub)
-       
+        yb = Beer.where(:id => ub)
+        yb.each do |x|
+            puts "Name: #{x.name}, Description: #{x.description}, Abv: #{x.abv}%"
+            puts "Category: #{x.cat_name}, Country: #{x.country}\n\n"
+        end
         
     end
 

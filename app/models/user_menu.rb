@@ -43,15 +43,33 @@ class UserMenu
         system "clear"
         case user_response
         when self.menu_choices[:beer_list]
-            prompt.keypress("your personalized beer list")
+            Menu.pint_pic
+            self.current_user.get_beers
+            prompt.keypress("This is your beer list!!!\n\nWhat are you waiting to try them all?\n\n")
+            Menu.start_menu
+
+            #this should be get_beer method
+            # self.current_user.get_beers
         when self.menu_choices[:find]
             Api.beer_sample_handler
         when self.menu_choices[:tasted_beer]
-            prompt.keypress("your tasted beer list")
+            Menu.pint_pic
+            prompt.keypress("So far you have tried these beers\n\n")
+            self.current_user.get_tasted
+            prompt.keypress("Seriously just that!!\n\n")
+            Menu.start_menu
         when self.menu_choices[:untasted_beer]
-            puts "View all untasted beer test works"
+            Menu.pint_pic
+            prompt.keypress("View all untasted beer test works")
+            self.current_user.get_untasted
+            prompt.keypress("You don't know what are you missing here!!\n\n")
+            Menu.start_menu
         when self.menu_choices[:drink_the_most]
-            puts "View the beer you drink the most test and works"
+            prompt.keypress("I can tell that you really like it\n\n")
+            self.current_user.get_most_drank
+            prompt.keypress("thanks to you the reviews of this one are going up. Chug Chug Chug!!")
+            Menu.pint_pic
+            Menu.start_menu
         when "Exit"
             Menu.start_menu
         end

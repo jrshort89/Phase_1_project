@@ -72,7 +72,7 @@ class Menu
     end
 
     def self.login_helper(username)
-        user = User.find_by username: username
+        user = User.find_or_create_by username: username
         self.pint_pic
         prompt.keypress("Hello, #{user.name}! Welcome back to your beer journey!")
         UserMenu.main_user_menu(user)
