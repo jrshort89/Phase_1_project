@@ -69,6 +69,7 @@ class Api
         UserBeer.create user_id: UserMenu.current_user.id, beer_id: b_id, has_tried: false 
         end
         # eventually this should take the user to their beer list
-        UserMenu.main_user_menu(UserMenu.current_user)
+        # UserMenu.main_user_menu(UserMenu.current_user)
+        UserMenu.current_user.get_beers
     end
 end

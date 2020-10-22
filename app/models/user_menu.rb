@@ -55,6 +55,8 @@ class UserMenu
         when self.menu_choices[:find]
             Api.beer_sample_handler
         when self.menu_choices[:search]
+            #this should lead to a search list
+            Api.beer_search_result_selector
             prompt.keypress "This should be a list of search terms to search by"
         when self.menu_choices[:tasted_beer]
             Menu.pint_pic
