@@ -2,6 +2,14 @@ class User < ActiveRecord::Base
     has_many :user_beers
     has_many :beers, through: :user_beers
 
+    # def visualizer_helper
+    #     each do |x|
+    #         puts "Name: #{x.name}, Description: #{x.description}, Abv: #{x.abv}%"
+    #         puts "Category: #{x.cat_name}, Country: #{x.country}\n\n"
+    #     end
+
+    # end
+    
     def get_beers
         # gets user's beer entire list that has_tried
         ub = UserBeer.where "user_id = ?", self.id
@@ -64,7 +72,12 @@ class User < ActiveRecord::Base
         # user instance method
         
         rand_num = rand(1..(Beer.count)) #how I get off rid of 0
-        Beer.find(rand_num)
+        yb = Beer.find(rand_num)
+        yb.each do |x|
+            puts "Name: #{x.name}, Description: #{x.description}, Abv: #{x.abv}%"
+            puts "Category: #{x.cat_name}, Country: #{x.country}\n\n"
+        end
+
        
     end
 

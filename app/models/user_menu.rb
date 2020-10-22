@@ -46,7 +46,7 @@ class UserMenu
             Menu.pint_pic
             self.current_user.get_beers
             prompt.keypress("This is your beer list!!!\n\nWhat are you waiting to try them all?\n\n")
-            Menu.start_menu
+            UserMenu.main_user_menu(UserMenu.current_user)
 
             #this should be get_beer method
             # self.current_user.get_beers
@@ -57,21 +57,22 @@ class UserMenu
             prompt.keypress("So far you have tried these beers\n\n")
             self.current_user.get_tasted
             prompt.keypress("Seriously just that!!\n\n")
-            Menu.start_menu
+            UserMenu.main_user_menu(UserMenu.current_user)
         when self.menu_choices[:untasted_beer]
             Menu.pint_pic
-            prompt.keypress("View all untasted beer test works")
+            # prompt.keypress("View all untasted beer test works")
             self.current_user.get_untasted
             prompt.keypress("You don't know what are you missing here!!\n\n")
-            Menu.start_menu
+            UserMenu.main_user_menu(UserMenu.current_user)
         when self.menu_choices[:drink_the_most]
             prompt.keypress("I can tell that you really like it\n\n")
             self.current_user.get_most_drank
             prompt.keypress("thanks to you the reviews of this one are going up. Chug Chug Chug!!")
             Menu.pint_pic
-            Menu.start_menu
+            UserMenu.main_user_menu(UserMenu.current_user)
         when "Exit"
             Menu.start_menu
+
         end
     end
 end
