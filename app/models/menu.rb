@@ -69,6 +69,7 @@ class Menu
             menu.choice "The least popular beer"
             menu.choice "An alphabatized list of our beer"
             menu.choice "An ordered list by ABV"
+            menu.choice "Beer FAQS"
             menu.choice "<- Back to main menu"
         end
         self.beer_stats_menu_handler(response)
@@ -86,6 +87,11 @@ class Menu
             Beer.alphabatize
         when "An ordered list by ABV"
             Beer.abv
+        when "Beer FAQS"
+            Ascii.bubble_pint
+            Beer.faqs
+            prompt.keypress("You are now a beer connoisseur")
+            Menu.user_menu
         when "<- Back to main menu"
             Menu.user_menu
         end

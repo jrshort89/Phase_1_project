@@ -44,10 +44,10 @@ class UserMenu
     def self.main_menu_helper(user_response)
         system "clear"
         case user_response
-        when self.menu_choices[:beer_list]
-            Menu.pint_pic
+        when self.menu_choices[:beer_list] #your personal beer options
+            Ascii.welcome_pint
             self.current_user.get_beers
-            prompt.keypress("This is your beer list!!!\n\nWhat are you waiting to try them all?\n\n")
+            prompt.keypress("This is your personal beer list!!!\n\n")
             UserMenu.main_user_menu(UserMenu.current_user)
 
             #this should be get_beer method
@@ -55,24 +55,26 @@ class UserMenu
         when self.menu_choices[:find]
             Api.beer_sample_handler
         when self.menu_choices[:search]
+            
+
             prompt.keypress "This should be a list of search terms to search by"
-        when self.menu_choices[:tasted_beer]
-            Menu.pint_pic
+        when self.menu_choices[:tasted_beer] #The ones that you order/pay
+            Ascii.bubble_pint
             prompt.keypress("So far you have tried these beers\n\n")
             self.current_user.get_tasted
-            prompt.keypress("Seriously just that!!\n\n")
+            prompt.keypress("Seriously!! just that!!\n\n")
             UserMenu.main_user_menu(UserMenu.current_user)
-        when self.menu_choices[:untasted_beer]
-            Menu.pint_pic
-            # prompt.keypress("View all untasted beer test works")
+        when self.menu_choices[:untasted_beer] #the ones that are still on your list but you haven't tried
+            Ascii.bubble_pint
             self.current_user.get_untasted
             prompt.keypress("You don't know what are you missing here!!\n\n")
             UserMenu.main_user_menu(UserMenu.current_user)
-        when self.menu_choices[:drink_the_most]
+        when self.menu_choices[:drink_the_most]#the most recurrent from your tasted_beer list
             prompt.keypress("I can tell that you really like it\n\n")
             self.current_user.get_most_drank
             prompt.keypress("thanks to you the reviews of this one are going up. Chug Chug Chug!!")
-            Menu.pint_pic
+            Ascii.bubble_pint
+
             UserMenu.main_user_menu(UserMenu.current_user)
         when "Exit"
             Menu.start_menu

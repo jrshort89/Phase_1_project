@@ -39,7 +39,7 @@ class Api
         if answer
             self.beer_search_result_selector 
         else
-            if self.prompt.yes? "Would you like anothor sample? \n\nEnter 'n' to return to the previous menu\n\n"
+            if self.prompt.yes? "Would you like another sample? \n\nEnter 'n' to return to the previous menu\n\n"
                 self.beer_sample_handler
             else
                 UserMenu.main_user_menu(UserMenu.current_user)

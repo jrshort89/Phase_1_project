@@ -2,7 +2,7 @@ class User < ActiveRecord::Base
     has_many :user_beers
     has_many :beers, through: :user_beers
 
-    # def visualizer_helper
+    # def display_helper
     #     each do |x|
     #         puts "Name: #{x.name}, Description: #{x.description}, Abv: #{x.abv}%"
     #         puts "Category: #{x.cat_name}, Country: #{x.country}\n\n"
@@ -18,9 +18,12 @@ class User < ActiveRecord::Base
         end
         yb = Beer.where(:id => bids)
         yb.each do |x|
-            puts "Name: #{x.name}, Description: #{x.description}, Abv: #{x.abv}%"
-            puts "Category: #{x.cat_name}, Country: #{x.country}\n\n"
+            puts "Name: #{x.name}, Abv: #{x.abv}%"
+            puts "Category: #{x.cat_name}, Country: #{x.country}"
+            puts "Description: #{x.description}"
         end
+
+
     end
 
     def get_untasted
@@ -31,9 +34,12 @@ class User < ActiveRecord::Base
         end
         yb = Beer.where(:id => bids)
         yb.each do |x|
-            puts "Name: #{x.name}, Description: #{x.description}, Abv: #{x.abv}%"
-            puts "Category: #{x.cat_name}, Country: #{x.country}\n\n"
+            puts "Name: #{x.name}, Abv: #{x.abv}%"
+            puts "Category: #{x.cat_name}, Country: #{x.country}"
+            puts "Description: #{x.description}"
         end
+        
+
     end
     
     def get_tasted
@@ -49,8 +55,9 @@ class User < ActiveRecord::Base
         #bids it's an array of all the beer_ids number 
         yb = Beer.where(:id => bids) #we call all the numbers
         yb.each do |x|
-            puts "Name: #{x.name}, Description: #{x.description}, Abv: #{x.abv}%"
-            puts "Category: #{x.cat_name}, Country: #{x.country}\n\n"
+            puts "Name: #{x.name}, Abv: #{x.abv}%"
+            puts "Category: #{x.cat_name}, Country: #{x.country}"
+            puts "Description: #{x.description}"
         end
     end
 
@@ -61,8 +68,9 @@ class User < ActiveRecord::Base
         # ub is the beer_id of the most drank beer
         yb = Beer.where(:id => ub)
         yb.each do |x|
-            puts "Name: #{x.name}, Description: #{x.description}, Abv: #{x.abv}%"
-            puts "Category: #{x.cat_name}, Country: #{x.country}\n\n"
+            puts "Name: #{x.name}, Abv: #{x.abv}%"
+            puts "Category: #{x.cat_name}, Country: #{x.country}"
+            puts "Description: #{x.description}"
         end
         
     end
@@ -74,8 +82,9 @@ class User < ActiveRecord::Base
         rand_num = rand(1..(Beer.count)) #how I get off rid of 0
         yb = Beer.find(rand_num)
         yb.each do |x|
-            puts "Name: #{x.name}, Description: #{x.description}, Abv: #{x.abv}%"
-            puts "Category: #{x.cat_name}, Country: #{x.country}\n\n"
+            puts "Name: #{x.name}, Abv: #{x.abv}%"
+            puts "Category: #{x.cat_name}, Country: #{x.country}"
+            puts "Description: #{x.description}"
         end
 
        
