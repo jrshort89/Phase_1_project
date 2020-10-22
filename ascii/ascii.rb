@@ -1,6 +1,12 @@
 class Ascii
     attr_reader :main_title
 
+    @@beer = []
+
+    def self.beer
+        @@beer
+    end
+
     def self.main_title
         puts "
         ██████╗ ██╗███╗   ██╗████████╗    ██████╗  █████╗ ██╗     
@@ -21,6 +27,17 @@ class Ascii
   _-_ -__ -||||)
      ______||||______
  ~~~~~~~~~~`""'"
+    end
+
+    def self.bubble_pint
+        puts "         _.._..,_,_
+        (          )
+         ]~,\"-.-~~[
+       .=])' (;  ([
+       | ]:: '    [
+       '=]): .)  ([
+         |:: '    |
+          ~~----~~"
     end
 
     

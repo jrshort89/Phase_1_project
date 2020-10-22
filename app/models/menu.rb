@@ -62,6 +62,7 @@ class Menu
     end
 
     def self.beer_stats_menu
+        system "clear"
         response = prompt.select("Learn more about our beer to make informed beer decisions:\n") do |menu|
             menu.choice "Our most consumed beer"
             menu.choice "Our top ten beers"

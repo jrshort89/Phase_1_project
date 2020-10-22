@@ -16,7 +16,8 @@ class Beer < ActiveRecord::Base
         max = ub.sort { |a, b| a <=> b }
         beer = Beer.find(max[0][0]).name
         system "clear"
-        self.prompt.keypress "Name: #{beer}"
+        Ascii.bubble_pint
+        self.prompt.keypress "\nName: #{beer}"
         Menu.beer_stats_menu
     end
 
