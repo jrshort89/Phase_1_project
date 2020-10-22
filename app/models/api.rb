@@ -34,13 +34,12 @@ class Api
 
     def self.beer_sample_handler
         # make this handle response and return the list the user requests
-        answer = self.sample_printer
         system "clear"
+        answer = self.sample_printer
         if answer
             self.beer_search_result_selector 
         else
             if self.prompt.yes? "Would you like anothor sample? \n\nEnter 'n' to return to the previous menu\n\n"
-                system "clear"
                 self.beer_sample_handler
             else
                 UserMenu.main_user_menu(UserMenu.current_user)
@@ -63,6 +62,7 @@ class Api
 
     def self.beer_search_result_selector
         beer = self.beer_list_populator.map { |beer| "#{beer.id} | #{beer["name"]} | #{beer["cat_name"]}" }
+        system "clear"
         response = self.prompt.multi_select("Please pick a few beers you would like to try:", beer).map do |selected_beer|
             selected_beer.split(" | ")[0].to_i
         end.each do |b_id|
