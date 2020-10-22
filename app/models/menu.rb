@@ -13,36 +13,16 @@ class Menu
     end
 
     def self.start_menu
-        self.title
+        system "clear"
+        Ascii.main_title
         self.prompt.keypress("\nPress Any Key To Start")
         self.user_menu
-    end
-
-    def self.title
-        system "clear"
-        puts "
-        ██████╗ ██╗███╗   ██╗████████╗    ██████╗  █████╗ ██╗     
-        ██╔══██╗██║████╗  ██║╚══██╔══╝    ██╔══██╗██╔══██╗██║     
-        ██████╔╝██║██╔██╗ ██║   ██║       ██████╔╝███████║██║     
-        ██╔═══╝ ██║██║╚██╗██║   ██║       ██╔═══╝ ██╔══██║██║     
-        ██║     ██║██║ ╚████║   ██║       ██║     ██║  ██║███████╗
-        ╚═╝     ╚═╝╚═╝  ╚═══╝   ╚═╝       ╚═╝     ╚═╝  ╚═╝╚══════╝
-                                                                  
-        "
-    end
-
-    def self.pint_pic
-        puts "         . .
-        .. . *.
- - -_ _-__-0oOo
-  _-_ -__ -||||)
-     ______||||______
- ~~~~~~~~~~`""'"
     end
 
     def self.user_menu
         system "clear"
         user_response = prompt.select("Welcome to Pint Pal!\n\n") do |menu|
+            menu.choice "Beer Stats"
             menu.choice "Create User"
             menu.choice "Login"
             menu.choice "Exit"
@@ -57,25 +37,58 @@ class Menu
         elsif user_response == "Login"
             username = prompt.ask("Please enter your username to continue drinking beer:")
             self.login_helper(username)
-        else
+        elsif user_response == "Beer Stats"
+            self.beer_stats_menu
+        elsif user_response == "Exit"
             return
         end
     end
 
     def self.create_user_helper
         name = prompt.ask("Please enter your first and last name:")
-        username = prompt.ask("Please create a unique username that embodies your deepest beer thoughts:")
-        User.find_or_create_by name: name, username: username
-        puts "Welcome #{name}!"
+        username = prompt.ask("\nPlease create a unique username that embodies your deepest beer thoughts:")
+        user = User.find_or_create_by name: name, username: username
+        puts "\nWelcome #{name}!"
         # log user in if they are a user already or not
-        sleep(3)
+        sleep(1)
+        UserMenu.main_user_menu(user)
     end
 
     def self.login_helper(username)
         user = User.find_or_create_by username: username
-        self.pint_pic
+        Ascii.welcome_pint
         prompt.keypress("Hello, #{user.name}! Welcome back to your beer journey!")
         UserMenu.main_user_menu(user)
+    end
+
+    def self.beer_stats_menu
+        system "clear"
+        response = prompt.select("Learn more about our beer to make informed beer decisions:\n") do |menu|
+            menu.choice "Our most consumed beer"
+            menu.choice "Our top ten beers"
+            menu.choice "The least popular beer"
+            menu.choice "An alphabatized list of our beer"
+            menu.choice "An ordered list by ABV"
+            menu.choice "<- Back to main menu"
+        end
+        self.beer_stats_menu_handler(response)
+    end
+
+    def self.beer_stats_menu_handler(response)
+        case response 
+        when "Our most consumed beer"
+            Beer.get_most_drank
+        when "Our top ten beers"
+            Beer.top_ten
+        when "The least popular beer"
+            Beer.get_least_drank
+        when "An alphabatized list of our beer"
+            Beer.alphabatize
+        when "An ordered list by ABV"
+            Beer.abv
+        when "<- Back to main menu"
+            Menu.user_menu
+        end
     end
 end
 

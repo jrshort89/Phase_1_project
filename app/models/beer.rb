@@ -1,6 +1,12 @@
 class Beer < ActiveRecord::Base
+    @@prompt = TTY::Prompt.new
+
     has_many :user_beers
     has_many :users, through: :user_beers
+
+    def self.prompt
+        @@prompt
+    end
 
     def self.get_most_drank
         # gets the beer drank by most users
@@ -8,7 +14,11 @@ class Beer < ActiveRecord::Base
         # ub = UserBeer.select(:beer_id).where(:has_tried => true)
         ub = UserBeer.where(:has_tried => true).group(:beer_id).count(:id)
         max = ub.sort { |a, b| a <=> b }
-        puts "Name: #{Beer.find(max[0][0]).name}"
+        beer = Beer.find(max[0][0]).name
+        system "clear"
+        Ascii.bubble_pint
+        self.prompt.keypress "\nName: #{beer}"
+        Menu.beer_stats_menu
     end
 
     def self.top_ten

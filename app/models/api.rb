@@ -6,6 +6,18 @@ class Api
         @@prompt
     end
 
+    # def self.get_beer_list
+    #     response_string = RestClient.get("https://data.opendatasoft.com/api/records/1.0/search/?dataset=open-beer-database%40public-us&rows=20&facet=style_name&facet=cat_name&facet=name_breweries&facet=country&refine.country=United+States&refine.style_name=American-Style+Pale+Ale")
+    #         response_hash = JSON.parse(response_string)
+    #         beers = response_hash["records"].map do |beer|
+    #             beer["fields"]
+    #     end
+    # end
+
+    def self.beer_style_menu
+        response = self.prompt.select("Please a style:\n\n", BeerList.beer).split(" ").join("+")
+    end
+
     def self.get_beer_list
         response_string = RestClient.get("https://data.opendatasoft.com/api/records/1.0/search/?dataset=open-beer-database%40public-us&rows=200&facet=style_name&facet=cat_name&facet=name_breweries&facet=country&refine.country=United+States")
         response_hash = JSON.parse(response_string)
@@ -22,13 +34,12 @@ class Api
 
     def self.beer_sample_handler
         # make this handle response and return the list the user requests
-        answer = self.sample_printer
         system "clear"
+        answer = self.sample_printer
         if answer
             self.beer_search_result_selector 
         else
             if self.prompt.yes? "Would you like anothor sample? \n\nEnter 'n' to return to the previous menu\n\n"
-                system "clear"
                 self.beer_sample_handler
             else
                 UserMenu.main_user_menu(UserMenu.current_user)
@@ -51,9 +62,13 @@ class Api
 
     def self.beer_search_result_selector
         beer = self.beer_list_populator.map { |beer| "#{beer.id} | #{beer["name"]} | #{beer["cat_name"]}" }
+        system "clear"
         response = self.prompt.multi_select("Please pick a few beers you would like to try:", beer).map do |selected_beer|
             selected_beer.split(" | ")[0].to_i
+        end.each do |b_id|
+        UserBeer.create user_id: UserMenu.current_user.id, beer_id: b_id, has_tried: false 
         end
-        # create the UserBeer objects from this
+        # eventually this should take the user to their beer list
+        UserMenu.main_user_menu(UserMenu.current_user)
     end
 end

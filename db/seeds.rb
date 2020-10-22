@@ -3,7 +3,7 @@
 # UserBeer.destroy_all
 
 # 10.times do 
-#     User.create(name: Faker::Name.name, gender: Faker::Gender.binary_type, age: rand(21..75), location: Faker::Address.zip)
+#     User.create(name: Faker::Name.name, gender: Faker::Gender.binary_type, age: rand(21..75), location: Faker::Address.zip, username: self.name)
 # end
 
 # 30.times do 

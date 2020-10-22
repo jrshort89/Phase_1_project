@@ -3,6 +3,7 @@ class UserMenu
     @@current_user = nil
     @@menu_choices = {
         find: "Find a delicious beer to drink",
+        search: "Search for beers from all over",
         beer_list: "View your beer list",
         tasted_beer: "View all of your tasted beers",
         untasted_beer: "View all of your untasted beers",
@@ -30,6 +31,7 @@ class UserMenu
         system "clear"
         user_response = prompt.select("#{user.name}, choose your beer adventure:\n") do |menu|
             menu.choice self.menu_choices[:find]
+            menu.choice self.menu_choices[:search]
             menu.choice self.menu_choices[:beer_list]
             menu.choice self.menu_choices[:tasted_beer]
             menu.choice self.menu_choices[:untasted_beer]
@@ -52,6 +54,8 @@ class UserMenu
             # self.current_user.get_beers
         when self.menu_choices[:find]
             Api.beer_sample_handler
+        when self.menu_choices[:search]
+            prompt.keypress "This should be a list of search terms to search by"
         when self.menu_choices[:tasted_beer]
             Menu.pint_pic
             prompt.keypress("So far you have tried these beers\n\n")
