@@ -14,7 +14,8 @@ class Menu
 
     def self.start_menu
         system "clear"
-        Ascii.main_title
+        # Ascii.main_title
+        Ascii.vertical_scroller(Ascii.array_maker(Ascii.beer[0]))
         self.prompt.keypress("\nPress Any Key To Start")
         self.user_menu
     end
@@ -67,7 +68,6 @@ class Menu
             menu.choice "Our most consumed beer"
             menu.choice "Our top ten beers"
             menu.choice "The least popular beer"
-            menu.choice "An alphabatized list of our beer"
             menu.choice "An ordered list by ABV"
             menu.choice "Beer FAQS"
             menu.choice "<- Back to main menu"
@@ -83,8 +83,6 @@ class Menu
             Beer.top_ten
         when "The least popular beer"
             Beer.get_least_drank
-        when "An alphabatized list of our beer"
-            Beer.alphabatize
         when "An ordered list by ABV"
             Beer.abv
         when "Beer FAQS"

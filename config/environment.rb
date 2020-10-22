@@ -9,3 +9,4 @@ ActiveRecord::Base.establish_connection(ENV["SINATRA_ENV"].to_sym)
 
 old_logger = ActiveRecord::Base.logger
 ActiveRecord::Base.logger = nil
+

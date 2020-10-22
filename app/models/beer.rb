@@ -23,25 +23,32 @@ class Beer < ActiveRecord::Base
 
     def self.top_ten
         ub = UserBeer.where(:has_tried => true).group(:beer_id).count(:id).take(10)
+        system "clear"
         ub.each do |beer| 
-            puts Beer.find(beer[0]).name + ": #{beer[1]}"
+            current_beer = Beer.find(beer[0]).name
+            puts "#{current_beer}: #{beer[1]}"
         end
+        self.prompt.keypress "\nPress any key to return to previous menu."
+        Menu.beer_stats_menu
     end
 
     def self.get_least_drank 
         ub = UserBeer.where(:has_tried => true).group(:beer_id).count(:id)
-        min = ub.sort { |a, b| b <=> a }
-        puts "Name: #{Beer.find(min[0][0]).name}"
-    end
-
-    def self.alphabatize
-        # return alphabatized array of beer names
-        self.order :name
+        beer = ub.sort { |a, b| b <=> a }[0][0]
+        system "clear"
+        puts "Maybe it's new or maybe it's terrible.\n\nEither way, maybe you should give it a try?\n\n"
+        prompt.keypress "Name: #{Beer.find(beer).name}\n\n"
+        Menu.beer_stats_menu
     end
 
     def self.abv
         # returns array of beer names and abv sorted in descending order
-        self.order abv: :desc
+        beers = self.order(abv: :desc).take(10)
+        beers.each do |beer| 
+            puts "#{beer.name}: #{beer.abv}"
+        end
+        self.prompt.keypress "\nPress any key to return to previous menu."
+        Menu.beer_stats_menu
     end
 
     def self.faqs
