@@ -1,6 +1,11 @@
 class User < ActiveRecord::Base
+    @@prompt = TTY::Prompt.new
     has_many :user_beers
     has_many :beers, through: :user_beers
+
+    def self.prompt
+        @@prompt
+    end
 
     # def display_helper
     #     each do |x|
@@ -22,8 +27,8 @@ class User < ActiveRecord::Base
             puts "Category: #{x.cat_name}, Country: #{x.country}"
             puts "Description: #{x.description}"
         end
-
-
+        User.prompt.keypress("This is your personal beer list!!!\n\n")
+        UserMenu.main_user_menu(UserMenu.current_user)
     end
 
     def get_untasted

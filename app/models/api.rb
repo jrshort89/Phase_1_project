@@ -6,25 +6,29 @@ class Api
         @@prompt
     end
 
-    # def self.get_beer_list
-    #     response_string = RestClient.get("https://data.opendatasoft.com/api/records/1.0/search/?dataset=open-beer-database%40public-us&rows=20&facet=style_name&facet=cat_name&facet=name_breweries&facet=country&refine.country=United+States&refine.style_name=American-Style+Pale+Ale")
-    #         response_hash = JSON.parse(response_string)
-    #         beers = response_hash["records"].map do |beer|
-    #             beer["fields"]
-    #     end
-    # end
+    def self.get_beer_list(beer_style="https://data.opendatasoft.com/api/records/1.0/search/?dataset=open-beer-database%40public-us&rows=200&facet=style_name&facet=cat_name&facet=name_breweries&facet=country&refine.country=United+States")
+        response_string = RestClient.get(beer_style)
+            response_hash = JSON.parse(response_string)
+            beers = response_hash["records"].map do |beer|
+                beer["fields"]
+        end
+    end
+
+    # "https://data.opendatasoft.com/api/records/1.0/search/?dataset=open-beer-database%40public-us&rows=20&facet=style_name&facet=cat_name&facet=name_breweries&facet=country&refine.country=United+States&refine.style_name=#{beer_style}"
 
     def self.beer_style_menu
         response = self.prompt.select("Please a style:\n\n", BeerList.beer).split(" ").join("+")
+        link = "https://data.opendatasoft.com/api/records/1.0/search/?dataset=open-beer-database%40public-us&rows=20&facet=style_name&facet=cat_name&facet=name_breweries&facet=country&refine.country=United+States&refine.style_name=#{response}"
+        self.get_beer_list(link)
     end
 
-    def self.get_beer_list
-        response_string = RestClient.get("https://data.opendatasoft.com/api/records/1.0/search/?dataset=open-beer-database%40public-us&rows=200&facet=style_name&facet=cat_name&facet=name_breweries&facet=country&refine.country=United+States")
-        response_hash = JSON.parse(response_string)
-        beers = response_hash["records"].map do |beer|
-            beer["fields"]
-        end
-    end
+    # def self.get_beer_list
+    #     response_string = RestClient.get("https://data.opendatasoft.com/api/records/1.0/search/?dataset=open-beer-database%40public-us&rows=200&facet=style_name&facet=cat_name&facet=name_breweries&facet=country&refine.country=United+States")
+    #     response_hash = JSON.parse(response_string)
+    #     beers = response_hash["records"].map do |beer|
+    #         beer["fields"]
+    #     end
+    # end
 
     def self.sample_printer
         beer = self.get_beer_list.sample
@@ -71,5 +75,6 @@ class Api
         # eventually this should take the user to their beer list
         # UserMenu.main_user_menu(UserMenu.current_user)
         UserMenu.current_user.get_beers
+        UserMenu.main_user_menu(UserMenu.current_user)
     end
 end

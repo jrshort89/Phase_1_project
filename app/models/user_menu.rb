@@ -47,17 +47,14 @@ class UserMenu
         when self.menu_choices[:beer_list] #your personal beer options
             Ascii.welcome_pint
             self.current_user.get_beers
-            prompt.keypress("This is your personal beer list!!!\n\n")
-            UserMenu.main_user_menu(UserMenu.current_user)
-
             #this should be get_beer method
             # self.current_user.get_beers
         when self.menu_choices[:find]
             Api.beer_sample_handler
         when self.menu_choices[:search]
             #this should lead to a search list
-            Api.beer_search_result_selector
-            prompt.keypress "This should be a list of search terms to search by"
+            Api.beer_style_menu
+            UserMenu.main_user_menu(UserMenu.current_user)
         when self.menu_choices[:tasted_beer] #The ones that you order/pay
             Ascii.bubble_pint
             prompt.keypress("So far you have tried these beers\n\n")
