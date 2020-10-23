@@ -64,8 +64,7 @@ class UserMenu
         when self.menu_choices[:untasted_beer] #the ones that are still on your list but you haven't tried
             Ascii.bubble_pint
             self.current_user.get_untasted
-            prompt.keypress("You don't know what are you missing here!!\n\n")
-            UserMenu.main_user_menu(UserMenu.current_user)
+            prompt.keypress("\n\nYou don't know what are you missing here!!\n\n")
         when self.menu_choices[:drink_the_most]#the most recurrent from your tasted_beer list
             prompt.keypress("I can tell that you really like it\n\n")
             self.current_user.get_most_drank

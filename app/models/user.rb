@@ -32,7 +32,11 @@ class User < ActiveRecord::Base
 
     def get_untasted
         # gets user's list of untried beers has_tried = false
+
         match_ub = UserBeer.where(:user_id => self.id, :has_tried => false)
+        if match_ub.count == 0
+            UserMenu.main_user_menu(UserMenu.current_user)
+        end
         ub = match_ub.map do |beer|
             beer.beer_id
         end# ub has the arrays of ids
@@ -44,20 +48,8 @@ class User < ActiveRecord::Base
         end #we need to get our user beer objects, the ones that match our selected b_ids
         matched_ub = match_ub.select do |ub|
           b_ids.include?(ub.beer_id)
-        end.each { |match| match.has_tried = true }
-        
-     
-
-        # bids = ub.map do |ub|
-        #     ub.beer_id
-        # end
-        # yb = Beer.where(:id => bids)
-        # yb.each do |x|
-        #     puts "Name: #{x.name}, Category: #{x.cat_name}"
-            
-        # end
-        
-
+        end.each { |match| match.has_tried = true; match.save }
+        UserMenu.main_user_menu(UserMenu.current_user)
     end
     
     def get_tasted
