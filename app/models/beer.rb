@@ -12,8 +12,16 @@ class Beer < ActiveRecord::Base
         # gets the beer drank by most users
         # only has_tried = true counts
         # ub = UserBeer.select(:beer_id).where(:has_tried => true)
-        ub = UserBeer.where(:has_tried => true).group(:beer_id).count(:id)
-        max = ub.sort { |a, b| a <=> b }
+        ub = UserBeer.where(:has_tried => true)
+        beer_count = {}
+        ub.each do |ub_instance|
+            if !beer_count[ub_instance.beer_id]
+                beer_count[ub_instance.beer_id] = 1
+            else
+                beer_count[ub_instance.beer_id] += 1
+            end
+        end
+        max = beer_count.sort { |a, b| b[1] <=> a[1] }
         beer = Beer.find(max[0][0]).name
         system "clear"
         Ascii.bubble_pint
@@ -22,11 +30,21 @@ class Beer < ActiveRecord::Base
     end
 
     def self.top_ten
-        ub = UserBeer.where(:has_tried => true).group(:beer_id).count(:id).take(10)
-        system "clear"
-        ub.each do |beer| 
-            current_beer = Beer.find(beer[0]).name
-            puts "#{current_beer}: #{beer[1]}"
+        ub = UserBeer.where(:has_tried => true)
+        beer_count = {}
+        ub.each do |ub_instance|
+            if !beer_count[ub_instance.beer_id]
+                beer_count[ub_instance.beer_id] = 1
+            else
+                beer_count[ub_instance.beer_id] += 1
+            end
+        end
+        max = beer_count.sort { |a, b| b[1] <=> a[1] }
+        count = 0
+        while count < 10 do 
+            current_beer = Beer.find(max[count][0]).name
+            puts "#{current_beer}"
+            count += 1
         end
         self.prompt.keypress "\nPress any key to return to previous menu."
         Menu.beer_stats_menu
@@ -34,7 +52,7 @@ class Beer < ActiveRecord::Base
 
     def self.get_least_drank 
         ub = UserBeer.where(:has_tried => true).group(:beer_id).count(:id)
-        beer = ub.sort { |a, b| b <=> a }[0][0]
+        beer = ub.sort { |a, b| a[1] <=> a[1] }[0][0]
         system "clear"
         puts "Maybe it's new or maybe it's terrible.\n\nEither way, maybe you should give it a try?\n\n"
         prompt.keypress "Name: #{Beer.find(beer).name}\n\n"

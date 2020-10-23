@@ -26,13 +26,11 @@ class User < ActiveRecord::Base
             puts "Name: #{x.name}, Category: #{x.cat_name}"
            
         end
-        User.prompt.keypress("This is your personal beer list!!!\n\n")
+        User.prompt.keypress("This is your personal beer list!!!\n\nGo to your untasted beer list to update any beers you have now tasted!\n\n")
         UserMenu.main_user_menu(UserMenu.current_user)
     end
 
     def get_untasted
-        # gets user's list of untried beers has_tried = false
-
         match_ub = UserBeer.where(:user_id => self.id, :has_tried => false)
         if match_ub.count == 0
             UserMenu.main_user_menu(UserMenu.current_user)
@@ -42,7 +40,7 @@ class User < ActiveRecord::Base
         end# ub has the arrays of ids
         yb = Beer.where(:id => ub) #with this we have an array of objects by beer_id
         beer = yb.map {|beer| "Id: #{beer.id} | NAME: #{beer.name} | CATEGORY: #{beer.cat_name} " } 
-        response = User.prompt.multi_select("Place your order", beer)
+        response = User.prompt.multi_select("Select your beer:", beer)
         b_ids = response.map do |selected_beer|
             selected_beer.split[1].to_i
         end #we need to get our user beer objects, the ones that match our selected b_ids
