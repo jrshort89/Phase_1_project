@@ -6,29 +6,20 @@ class Api
         @@prompt
     end
 
-    def self.get_beer_list(beer_style="https://data.opendatasoft.com/api/records/1.0/search/?dataset=open-beer-database%40public-us&rows=200&facet=style_name&facet=cat_name&facet=name_breweries&facet=country&refine.country=United+States")
-        response_string = RestClient.get(beer_style)
+    def self.get_beer_list(beer_style=BeerList.beer.sample)
+        response_string = RestClient.get("https://data.opendatasoft.com/api/records/1.0/search/?dataset=open-beer-database%40public-us&rows=20&facet=style_name&facet=cat_name&facet=name_breweries&facet=country&refine.country=United+States&refine.style_name=#{beer_style}")
             response_hash = JSON.parse(response_string)
             beers = response_hash["records"].map do |beer|
                 beer["fields"]
         end
     end
 
-    # "https://data.opendatasoft.com/api/records/1.0/search/?dataset=open-beer-database%40public-us&rows=20&facet=style_name&facet=cat_name&facet=name_breweries&facet=country&refine.country=United+States&refine.style_name=#{beer_style}"
-
     def self.beer_style_menu
-        response = self.prompt.select("Please a style:\n\n", BeerList.beer).split(" ").join("+")
-        link = "https://data.opendatasoft.com/api/records/1.0/search/?dataset=open-beer-database%40public-us&rows=20&facet=style_name&facet=cat_name&facet=name_breweries&facet=country&refine.country=United+States&refine.style_name=#{response}"
-        self.get_beer_list(link)
+        response = self.prompt.select("Please select a style:\n\n", BeerList.beer)
+        response = response.split(" ").join("+")
+        self.get_beer_list(response)
+        self.beer_search_result_selector(response)
     end
-
-    # def self.get_beer_list
-    #     response_string = RestClient.get("https://data.opendatasoft.com/api/records/1.0/search/?dataset=open-beer-database%40public-us&rows=200&facet=style_name&facet=cat_name&facet=name_breweries&facet=country&refine.country=United+States")
-    #     response_hash = JSON.parse(response_string)
-    #     beers = response_hash["records"].map do |beer|
-    #         beer["fields"]
-    #     end
-    # end
 
     def self.sample_printer
         beer = self.get_beer_list.sample
@@ -41,7 +32,7 @@ class Api
         system "clear"
         answer = self.sample_printer
         if answer
-            self.beer_search_result_selector 
+            self.beer_search_result_selector(BeerList.beer.sample.split(" ").join("+")) 
         else
             if self.prompt.yes? "Would you like another sample? \n\nEnter 'n' to return to the previous menu\n\n"
                 self.beer_sample_handler
@@ -51,8 +42,8 @@ class Api
         end
     end
 
-    def self.beer_list_populator
-        beers = self.get_beer_list.map do |beer|
+    def self.beer_list_populator(link)
+        beers = self.get_beer_list(link).map do |beer|
             Beer.find_or_create_by(
                 name: beer["name"],
                 description: beer["descript"],
@@ -64,8 +55,8 @@ class Api
         beers
     end 
 
-    def self.beer_search_result_selector
-        beer = self.beer_list_populator.map { |beer| "#{beer.id} | #{beer["name"]} | #{beer["cat_name"]}" }
+    def self.beer_search_result_selector(link)
+        beer = self.beer_list_populator(link).map { |beer| "#{beer.id} | #{beer["name"]} | #{beer["cat_name"]}" }
         system "clear"
         response = self.prompt.multi_select("Please pick a few beers you would like to try:", beer).map do |selected_beer|
             selected_beer.split(" | ")[0].to_i

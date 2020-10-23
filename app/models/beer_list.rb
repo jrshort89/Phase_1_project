@@ -152,6 +152,5 @@ end
 self.fixArr
 
 self.beer.shift
-
 end
 
