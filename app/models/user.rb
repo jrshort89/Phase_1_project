@@ -74,12 +74,26 @@ class User < ActiveRecord::Base
     def get_most_drank
         # get user's most drank beer
         # compare quantity of 'has_tried = true' per UserBeer for this user
-        ub = UserBeer.where(:user_id => self.id, :has_tried => true).group(:beer_id).count(:id)
-        # ub is the beer_id of the most drank beer
-        yb = Beer.where(:id => ub.keys[0])
-        yb.each do |x|
-            puts "Name: #{x.name}, Category: #{x.cat_name}"      
-        end        
+        # ub = UserBeer.where(:user_id => self.id, :has_tried => true).group(:beer_id).count(:id)
+        # # ub is the beer_id of the most drank beer
+        # yb = Beer.where(:id => ub.keys[0])
+        # yb.each do |x|
+        #     puts "Name: #{x.name}, Category: #{x.cat_name}"      
+        # end 
+        ub = UserBeer.where(:has_tried => true, :user_id => self.id )
+        beer_count = {}
+        ub.each do |ub_instance|
+            if !beer_count[ub_instance.beer_id]
+                beer_count[ub_instance.beer_id] = 1
+            else
+                beer_count[ub_instance.beer_id] += 1
+            end
+        end
+        max = beer_count.sort { |a, b| b[1] <=> a[1] }
+        beer = Beer.find(max[0][0])
+        system "clear"
+        Ascii.bubble_pint
+        User.prompt.keypress "\nName: #{beer.name} | #{beer.cat_name}"       
     end
 
     def try_an_untasted_beer
