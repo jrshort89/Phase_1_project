@@ -68,7 +68,7 @@ class UserMenu
         when self.menu_choices[:drink_the_most]#the most recurrent from your tasted_beer list
             prompt.keypress("I can tell that you really like it\n\n")
             self.current_user.get_most_drank
-            prompt.keypress("thanks to you the reviews of this one are going up. Chug Chug Chug!!")
+            prompt.keypress("\nThanks to your commitment to this beer, you are single handedly making the brewer rich! Chug Chug Chug!!")
             Ascii.bubble_pint
 
             UserMenu.main_user_menu(UserMenu.current_user)
