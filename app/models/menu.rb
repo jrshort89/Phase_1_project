@@ -57,8 +57,9 @@ class Menu
 
     def self.login_helper(username)
         user = User.find_or_create_by username: username
-        Ascii.welcome_pint
-        prompt.keypress("Hello, #{user.name}! Welcome back to your beer journey!")
+        Ascii.horizontal_scroller(Ascii.beer[1])
+        ("Hello, #{user.name}! Welcome back to your beer journey!").each_char { |x| print x; sleep(0.03)}
+        prompt.keypress('')
         UserMenu.main_user_menu(user)
     end
 

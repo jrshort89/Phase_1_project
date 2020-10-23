@@ -61,7 +61,7 @@ class Ascii
     end
 
     def self.horizontal_scroller(ascii)
-        ascii.each do |string| 
+        self.array_maker(ascii).each do |string| 
             string.each_char {|x| print x; sleep(0.01)}
             puts "\n"
         end
