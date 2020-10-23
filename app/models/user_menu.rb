@@ -2,8 +2,8 @@ class UserMenu
     @@prompt = TTY::Prompt.new
     @@current_user = nil
     @@menu_choices = {
-        find: "Find a delicious beer to drink",
-        search: "Search for beers from all over",
+        find: "Feeling lucky",
+        search: "Search for beers by style",
         beer_list: "View your beer list",
         tasted_beer: "View all of your tasted beers",
         untasted_beer: "View all of your untasted beers",
